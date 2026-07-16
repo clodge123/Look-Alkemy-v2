@@ -1,95 +1,92 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 interface SlotProps {
-  tile: string | null;
-  onPress: () => void;
   index: number;
+  tile: {
+    id: string;
+    word: string;
+    category: string;
+  } | null;
+  isActive: boolean;
+  onDrop: () => void;
 }
 
-const SLOT_COLORS = ['#6D5EFC', '#00D4FF', '#FF6B9D', '#FFB84D'];
-
-export default function Slot({ tile, onPress, index }: SlotProps) {
+export default function Slot({ index, tile, isActive, onDrop }: SlotProps) {
   const scale = useSharedValue(1);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+      opacity: isActive ? 0.8 : 1,
+    };
+  });
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.95, { damping: 15, stiffness: 400 });
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 15, stiffness: 400 });
-    onPress();
+  const handlePress = () => {
+    scale.value = withSpring(0.9, { damping: 12, stiffness: 300 }, () => {
+      scale.value = withSpring(1, { damping: 12, stiffness: 300 });
+    });
+    onDrop();
   };
 
   return (
-    <View style={[styles.container, { marginHorizontal: 8 }]}>
-      <View style={[styles.slot, { borderColor: SLOT_COLORS[index] }]}>
+    <View style={styles.slotContainer}>
+      <View 
+        style={[
+          styles.slot,
+          { 
+            borderColor: tile ? '#6D5EFC' : '#2A2A4A',
+            backgroundColor: tile ? 'rgba(109, 94, 252, 0.1)' : 'transparent',
+          }
+        ]}
+        onTouchStart={handlePress}
+      >
         {tile ? (
-          <View style={[styles.tile, { backgroundColor: SLOT_COLORS[index] }]}>
-            <Text style={styles.tileText}>{tile}</Text>
+          <View style={styles.tileContainer}>
+            <Text style={styles.tileText}>{tile.word}</Text>
+            <Text style={styles.tileCategory}>{tile.category}</Text>
           </View>
         ) : (
-          <View style={styles.emptySlot}>
-            <Ionicons name="add" size={32} color="rgba(255,255,255,0.3)" />
-          </View>
+          <Text style={styles.emptyText}>Slot {index + 1}</Text>
         )}
       </View>
-      <Text style={[styles.slotNumber, { color: SLOT_COLORS[index] }]}>
-        {index + 1}
-      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
+  slotContainer: {
+    width: '23%',
+    aspectRatio: 1,
   },
   slot: {
-    width: 110,
-    height: 110,
-    borderWidth: 3,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.03)',
-  },
-  tile: {
-    width: 100,
-    height: 100,
+    flex: 1,
     borderRadius: 12,
+    borderWidth: 2,
+    borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    padding: 8,
+  },
+  tileContainer: {
+    alignItems: 'center',
   },
   tileText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '700',
-    textAlign: 'center',
-    paddingHorizontal: 8,
-  },
-  emptySlot: {
-    width: 100,
-    height: 100,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-  },
-  slotNumber: {
     fontSize: 12,
     fontWeight: '700',
-    marginTop: 8,
+    color: '#6D5EFC',
+    marginBottom: 4,
+  },
+  tileCategory: {
+    fontSize: 10,
+    color: '#A0A0A0',
+    textTransform: 'uppercase',
+  },
+  emptyText: {
+    fontSize: 14,
+    color: '#4A4A6A',
+    fontWeight: '500',
   },
 });

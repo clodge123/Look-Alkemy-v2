@@ -1,11 +1,15 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SAMPLE_PACKS = [
-  { id: '1', name: 'Nature Vibes', description: 'Organic, natural elements', color: '#00F5D4' },
-  { id: '2', name: 'Urban Edge', description: 'Modern, city-inspired', color: '#6D5EFC' },
-  { id: '3', name: 'Retro Wave', description: '80s inspired aesthetics', color: '#FF6B9D' },
-  { id: '4', name: 'Minimal Zen', description: 'Clean, simple compositions', color: '#00D4FF' },
+  { id: '1', name: 'Cinematic Basics', count: 24, color: '#6D5EFC' },
+  { id: '2', name: 'Portrait Pro', count: 18, color: '#FF6B6B' },
+  { id: '3', name: 'Landscape Master', count: 32, color: '#4ECDC4' },
+  { id: '4', name: 'Abstract Art', count: 28, color: '#FFE66D' },
+  { id: '5', name: 'Street Photography', count: 22, color: '#95E1D3' },
+  { id: '6', name: 'Fashion Forward', count: 20, color: '#F38181' },
 ];
 
 export default function PacksScreen() {
@@ -13,25 +17,27 @@ export default function PacksScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Ingredient Packs</Text>
-        <Text style={styles.subtitle}>Choose a pack to start combining</Text>
+        <Text style={styles.subtitle}>Browse and select packs</Text>
       </View>
 
-      <FlatList
-        data={SAMPLE_PACKS}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <View style={[styles.packCard, { borderColor: item.color }]}>
-            <View style={[styles.iconContainer, { backgroundColor: item.color }]}>
-              <Text style={styles.iconText}>{item.name.charAt(0)}</Text>
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+        {SAMPLE_PACKS.map((pack) => (
+          <View key={pack.id} style={[styles.packCard, { borderColor: pack.color }]}>
+            <View style={styles.packHeader}>
+              <View style={[styles.packIcon, { backgroundColor: pack.color }]}>
+                <Text style={styles.packIconText}>📦</Text>
+              </View>
+              <View style={styles.packInfo}>
+                <Text style={styles.packName}>{pack.name}</Text>
+                <Text style={styles.packCount}>{pack.count} ingredients</Text>
+              </View>
             </View>
-            <View style={styles.packInfo}>
-              <Text style={styles.packName}>{item.name}</Text>
-              <Text style={styles.packDescription}>{item.description}</Text>
+            <View style={styles.packFooter}>
+              <Text style={styles.packButton}>Use Pack</Text>
             </View>
           </View>
-        )}
-      />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -39,60 +45,72 @@ export default function PacksScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0C12',
+    backgroundColor: '#1A1A2E',
   },
   header: {
     padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   title: {
-    color: '#F4F6FF',
     fontSize: 28,
-    fontWeight: '800',
-    marginBottom: 8,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 4,
   },
   subtitle: {
-    color: '#888',
-    fontSize: 16,
+    fontSize: 14,
+    color: '#A0A0A0',
   },
-  list: {
-    padding: 16,
+  content: {
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 20,
   },
   packCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.03)',
-    borderRadius: 16,
+    backgroundColor: '#16213E',
+    borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 2,
-    borderStyle: 'solid',
   },
-  iconContainer: {
-    width: 60,
-    height: 60,
+  packHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  packIcon: {
+    width: 48,
+    height: 48,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 16,
+    marginRight: 12,
   },
-  iconText: {
-    color: '#FFF',
+  packIconText: {
     fontSize: 24,
-    fontWeight: '700',
   },
   packInfo: {
     flex: 1,
   },
   packName: {
-    color: '#F4F6FF',
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
-  packDescription: {
-    color: '#888',
+  packCount: {
     fontSize: 14,
+    color: '#A0A0A0',
+  },
+  packFooter: {
+    borderTopWidth: 1,
+    borderTopColor: '#2A2A4A',
+    paddingTop: 12,
+  },
+  packButton: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6D5EFC',
+    textAlign: 'center',
   },
 });

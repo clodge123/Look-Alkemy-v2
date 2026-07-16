@@ -1,39 +1,27 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#6D5EFC',
-        tabBarInactiveTintColor: '#888',
-        tabBarStyle: {
-          backgroundColor: '#0A0C12',
-          borderTopColor: 'rgba(255,255,255,0.1)',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
-        },
-        headerStyle: {
-          backgroundColor: '#0A0C12',
-        },
-        headerTintColor: '#F4F6FF',
-        headerTitleStyle: {
-          fontWeight: '700',
-        },
+        tabBarInactiveTintColor: '#666666',
+        tabBarStyle: styles.tabBar,
+        tabBarLabelStyle: styles.tabBarLabel,
+        headerStyle: styles.header,
+        headerTitleStyle: styles.headerTitle,
       }}
     >
       <Tabs.Screen
         name="board"
         options={{
-          title: 'Game Board',
-          headerTitle: 'Look-Alkemy',
+          title: 'Board',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="apps" size={size} color={color} />
+            <View style={styles.iconContainer}>
+              <Text style={{ color, fontSize: size }}>🎮</Text>
+            </View>
           ),
         }}
       />
@@ -41,9 +29,10 @@ export default function TabLayout() {
         name="packs"
         options={{
           title: 'Packs',
-          headerTitle: 'Ingredient Packs',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="layers" size={size} color={color} />
+            <View style={styles.iconContainer}>
+              <Text style={{ color, fontSize: size }}>📦</Text>
+            </View>
           ),
         }}
       />
@@ -51,12 +40,50 @@ export default function TabLayout() {
         name="collections"
         options={{
           title: 'Collections',
-          headerTitle: 'My Collections',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bookmark" size={size} color={color} />
+            <View style={styles.iconContainer}>
+              <Text style={{ color, fontSize: size }}>⭐</Text>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <View style={styles.iconContainer}>
+              <Text style={{ color, fontSize: size }}>👤</Text>
+            </View>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: '#1A1A2E',
+    borderTopColor: '#2A2A4A',
+    height: 60,
+    paddingBottom: 8,
+    paddingTop: 8,
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  header: {
+    backgroundColor: '#1A1A2E',
+  },
+  headerTitle: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
