@@ -1,15 +1,21 @@
 {
   "expo": {
     "name": "Look-Alkemy-v2",
-    "slug": "Look-Alkemy-v2",
+    "slug": "look-alkemy-v2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.glman123.lookalkemyv2",
+      "supportsTablet": true,
+      "appleTeamId": "G2MU2637ZD",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.glman123.lookalkemyv2",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +26,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5b2a2ef8-6e3f-4288-91c5-fe3245903b0d"
+      }
+    },
+    "owner": "glman123s-organization"
   }
 }
